@@ -4,10 +4,10 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Idris: It's Like Haskell But Cooler</title>
+		<title>reveal.js - The HTML Presentation Framework</title>
 
-		<meta name="description" content="An Introduction to Type Theory in Idris">
-		<meta name="author" content="Matt Campbell">
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -15,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/night.css" id="theme">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -37,158 +37,24 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Idris: Like Haskell, Only Cooler.</h1>
-					<br>
-					<h3>An Introduction to Type Theory in Idris</h3>
+					<h1>Reveal.js</h1>
+					<h3>HTML Presentations Made Easy</h3>
 					<p>
-						<small>Brought to you by <a href="https://github.com/mecampbellsoup">Matt Campbell</a> / <a href="http://twitter.com/mecampbellsoup">@mecampbellsoup</a></small>
+						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
 					</p>
 				</section>
 
 				<section>
-					<section>
-						<h2>Some quick examples...</h2>
-						<p>Let's prime your brains, shall we?</p>
-					</section>
+					<h2>Heads Up</h2>
+					<p>
+						reveal.js is a framework for easily creating beautiful presentations using HTML. You'll need a browser with
+						support for CSS 3D transforms to see it in its full glory.
+					</p>
 
-					<section data-markdown>
-        	<script type="text/template">
-						## Data Types
-						Data types are declared in a similar way to Haskell data types, with a similar syntax. Natural numbers and lists, for example, can be declared as follows:
-
-						```haskell
-						data Nat = Z | S Nat
-
-						Idris> S Z
-						1 : Nat
-
-						Idris> S 4
-						5 : Nat
-
-						Idris> S 5.0
-						-- ... what's going to happen here?
-
-						data List a = Nil | (::) a (List a)
-						```
-						P.S.: `Idris>` indicates we're in the Idris REPL. Starting it by running `idris <file>` from the CLI starts a server (by default) on port 4294... so we can do some cool stuff with that.
-					</script>
-					</section>
-
-					<section data-markdown>
-        	<script type="text/template">
-						## Basic Addition
-						Functions are implemented by pattern matching, again using a similar syntax to Haskell. The main difference is that IDRIS requires type declarations for all functions, using a single colon : (rather than Haskell’s double colon ::).
-						```haskell
-						-- Unary addition
-						plus : Nat -> Nat -> Nat
-						plus Z     y = y
-						plus (S k) y = S (plus k y)
-
-						Idris> plus (S (S Z)) (S (S Z))
-						4 : Nat
-						```
-					</script>
-					</section>
-
-					<section data-markdown>
-        	<script type="text/template">
-						## Basic Multiplication
-						Functions are implemented by pattern matching, again using a similar syntax to Haskell. The main difference is that IDRIS requires type declarations for all functions, using a single colon : (rather than Haskell’s double colon ::).
-						```haskell
-						−− Unary multiplication
-						mult : Nat -> Nat -> Nat
-						mult Z     y = Z
-						mult (S k) y = plus y (mult k y)
-
-						Idris> mult (S (S (S Z))) (plus (S (S Z)) (S (S Z)))
-						12 : Nat
-						```
-					</script>
-					</section>
+					<aside class="notes">
+						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
+					</aside>
 				</section>
-
-				<section>
-					<section data-markdown>
-	      	<script type="text/template">
-						## so far, so good!
-						Good work everybody. So far, we've seen that Idris and Haskell really aren't so different.
-						So what's all the fuss about?
-					</script>
-					</section>
-					<section data-markdown>
-	      	<script type="text/template">
-						## Dependent Types
-						Dependent types allow types to be predicated on values. IDRIS uses full-spectrum dependent types, meaning that there is no restriction on which values may appear in types.
-
-						![](https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTqmVJLLL9HS9ECV0AK1Bu9d8ATNqrRhCyTXglDRITJvWm0xbu6)
-					</script>
-					</section>
-
-					<section data-markdown>
-	      	<script type="text/template">
-						## Vectorz
-						![](http://www.ctwatch.org/quarterly/figures/12/ma-figure1.gif)
-					</script>
-					</section>
-
-					<section data-markdown>
-	      	<script type="text/template">
-						Vectors are lists which carry their size in the type.  A standard example of a dependent type is the type of “lists with length”, conventionally called vectors in the dependent type literature. In IDRIS, we declare vectors as follows:
-						```haskell
-						data Vect : Nat -> Type -> Type where
-							Nil  : Vect Z a
-							(::) : a -> Vect k a -> Vect (S k) a
-						```
-						We say that Vect is _indexed_ over Nat and _parameterised_ by Type.
-					</script>
-					</section>
-
-					<section data-markdown>
-	      	<script type="text/template">
-						## Adding 2 Vects
-						This is really an exercise in defining a function on dependent types. For example, ++, defined in the library, appends two Vects:
-						```haskell
-						(++) : Vect n a -> Vect m a -> Vect (n + m) a
-						(++) Nil       ys = ys
-						(++) (x :: xs) ys = x :: xs ++ ys
-						```
-					</script>
-					</section>
-
-					<section data-markdown>
-	      	<script type="text/template">
-						## Finite Sets
-						Finite sets, as the name suggests, are sets with a finite number of elements.
-						```haskell
-						data Fin : Nat -> Type where
-							fZ : Fin (S k)
-							fS : Fin k -> Fin (S k)
-						```
-					</script>
-					</section>
-
-					<section data-markdown>
-	      	<script type="text/template">
-						A useful application of the `Fin` family is to represent bounded natural numbers. Since the first `n` natural numbers form a finite set of `n` elements, we can treat `Fin n` as the set of natural numbers bounded by `n`.
-
-						For example, the following function which looks up an element in a `Vect`, by a bounded index given as a `Fin n`, is defined in the prelude:
-					</script>
-					</section>
-
-					<section data-markdown>
-	      	<script type="text/template">
-	      	## a better way to get a list elem
-	      	```haskell
-index : Fin n -> Vect n a -> a
-index fZ     (x :: xs) = x
-index (fS k) (x :: xs) = index k xs
-	      	```
-	      	The location is bounded by the length of the vector (`n` in each case), so there is no need for a run-time bounds check. The type checker guarantees that the location is no larger than the length of the vector.
-					</script>
-					</section>
-				</section>
-
-
 
 				<!-- Example of nested vertical slides -->
 				<section>
@@ -307,8 +173,9 @@ index (fS k) (x :: xs) = index k xs
 						<a href="?theme=simple#/themes">Simple</a> -
 						<a href="?theme=serif#/themes">Serif</a> -
 						<a href="?theme=night#/themes">Night</a> <br>
-						<a href="?theme=moon#/themes">Moon</a> -
-						<a href="?theme=solarized#/themes">Solarized</a>
+						<a href="?theme=moon.css#/themes">Moon</a> -
+						<a href="?theme=simple.css#/themes">Simple</a> -
+						<a href="?theme=solarized.css#/themes">Solarized</a>
 					</p>
 					<p>
 						<small>
