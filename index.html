@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Idris: It's Like Haskell But Cooler</title>
+		<title>Type Theory in Idris & Haskell</title>
 
-		<meta name="description" content="An Introduction to Type Theory in Idris">
+		<meta name="description" content="An Introduction to Type Theory in Idris & Haskell">
 		<meta name="author" content="Matt Campbell">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -37,23 +37,252 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Idris: Like Haskell, Only Cooler.</h1>
+					<h1>independent vs. dependent types</h1>
 					<br>
-					<h3>An Introduction to Type Theory in Idris</h3>
+					<h3>an intro to type theory in haskell & idris</h3>
 					<p>
-						<small>Brought to you by <a href="https://github.com/mecampbellsoup">Matt Campbell</a> / <a href="http://twitter.com/mecampbellsoup">@mecampbellsoup</a></small>
+						<small><a href="https://github.com/mecampbellsoup">Matt Campbell</a> / <a href="http://twitter.com/mecampbellsoup">@mecampbellsoup</a></small>
 					</p>
 				</section>
 
 				<section>
-					<section>
-						<h2>Some quick examples...</h2>
-						<p>Let's prime your brains, shall we?</p>
+					<section data-markdown>
+	      	<script type="text/template">
+						## hold up - what exactly is a "type"?
+						![](https://www.neatoshop.com/images/product/50/7750/Youre-Not-My-Type_42427-l.jpg?v=42427)
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## well, it began as the answer to a philosophical crisis.
+						<br>
+						In 1874, Georg Cantor proved that the cardinality of a power set P(S) is always greater than that of the original set S...
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						![](http://3.bp.blogspot.com/-k8qPHXzAjWk/Tt4FWAGTCsI/AAAAAAAAEGU/sBgNW5lrsY0/s1600/say_what_1863.jpg)
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## a visual of the powerset P(S) of the set {x, y, z}
+						<br>
+						![](http://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Hasse_diagram_of_powerset_of_3.svg/429px-Hasse_diagram_of_powerset_of_3.svg.png)
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## in english (spanish?) please!
+						<br>
+						you can always make a set bigger than any set you care to name even if that set is infinite.
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## preguntas filosóficas
+						<br><ul>
+						<li class="fragment roll-in">Is the man who loves all men who do not love themselves self-hating? Self-loving?</li>
+						<li class="fragment roll-in">Can God lift a stone that is infinitely heavy?</li></ul>
+						<br><br>
+						<p class="fragment roll-in">Luckily, mathematics can be rescued from this paradox by many tactics... including set theory!</p>
+					</script>
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+	      	<script type="text/template">
+						## let's put the "type" in type theory, shall we?
+						<br>
+						by definition, the primitive objects have type 0.<br>
+						sets that contain these objects have type 1.<br>
+						sets that contain sets of type 1 have type 2. (e.g. ordered pairs.)<br>
+						and so on...
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## connecting the dots
+						<br>
+						Thus one cannot ask about a set that contains itself, for this set would have to be higher (greater cardinality) than it's own type.
+						<br><br>
+						<span class="fragment current-visible highlight-blue">There is no person who loves everyone who doesn't love themselves.</span><br>
+						<span class="fragment current-visible highlight-green">There is no being that can do everything that it cannot do.</span>
+					</script>
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+	      	<script type="text/template">
+						## type theory in programming languages
+						<br>
+						#### what are they good for? why do we care about them?
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## a working definition.
+						<br>
+						In programming languages, a **type** constitutes a definition of a set of values (for example, "all integers"), and the **allowable operations on those values** (for example, addition and multiplication).
+```haskell
+λ > :type 5
+5 :: Num a => a
+
+λ > :info Num
+class Num a where
+  (+) :: a -> a -> a
+  (*) :: a -> a -> a
+  (-) :: a -> a -> a
+  negate :: a -> a
+  abs :: a -> a
+  signum :: a -> a
+  fromInteger :: Integer -> a
+```
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## type theory applied
+						<br>
+						A type system ensures the correct behavior of any program routine by enforcing a set of predetermined behaviors.
+<pre><code class="haskell fragment roll-in">λ > :t (5 * 5)
+(5 * 5) :: Num a => a
+
+λ > 5 * 5
+25
+</code></pre>
+
+<pre><code class="haskell fragment roll-in">λ > :t (5 * "hello, world!")
+<interactive>:1:4:
+    No instance for (Num [Char]) arising from a use of `*'
+    Possible fix: add an instance declaration for (Num [Char])
+    In the expression: (5 * "hello, world!")
+</code></pre>
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## so what - Ruby does that too...
+						to be sure, Ruby is also a strongly-typed language.
+						<br>
+<pre><code class="ruby fragment roll-in">pry> 5 * 5
+=> 25
+</code></pre><br>
+
+<pre><code class="ruby fragment roll-in">pry> 5 \* "hello!"
+TypeError: String can't be coerced into Fixnum
+from (pry):2:in `*'
+</code></pre><br>
+					<h2 class="fragment roll-in highlight-blue">in haskell, strong types are enforced at compile time - not run-time.</h2>
+					</script>
+					</section>
+				</section>
+
+				<section>
+					<section data-markdown>
+	      	<script type="text/template">
+						<h2>now we know about type theory, yay!</h2><br>
+						![](http://blog.3dcart.com/wp-content/uploads/2012/05/yay.jpg)<br>
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## let's put our knowledge to use and compare independent & dependent types.
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## first, some definitions.
+						* independent type: values are strictly derived from their types.
+						* dependent types: new values determine their own types.
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## let's make a couple of lists in haskell...
+```haskell
+newList :: Int -> [Int]
+newList a = take a [1..]
+```
+
+```haskell
+λ > newList 2
+[1,2]
+
+λ > newList 3
+[1,2,3]
+
+λ > newList 2 ++ newList 3
+[1,2,1,2,3]
+```
+						<br>
+						in haskell, our lists are all functions of the _independent_ type: `[Num a] -> [a]`
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## now, let's try to do the same using idris...
+						<br>
+						first, let's make our lists. anyone notice something different?
+```haskell
+vectOne : Vect 5 Int
+vectOne = [1,2,3,4,5]
+```
+
+```haskell
+vectTwo : Vect 4 Int
+vectTwo = 7 :: 8 :: 9 :: 10 :: Nil
+```
+<br>
+```haskell
+*funcs> vectOne
+[1,2,3,4,5] : Vect 5 Int
+
+*funcs> vectTwo
+[7,8,9,10] : Vect 4 Int
+```
+					</script>
+					</section>
+
+					<section data-markdown>
+	      	<script type="text/template">
+						## since idris implements dependent types, the value returned by `Prelude.Vect.++` is actually defining its own type.
+						<br>
+```haskell
+vectOne : Vect 5 Int
+vectOne = [1,2,3,4,5]
+```
+
+```haskell
+vectTwo : Vect 4 Int
+vectTwo = 7 :: 8 :: 9 :: 10 :: Nil
+```
+<br>
+```haskell
+*funcs> vectOne ++ vectTwo
+[1,2,3,4,5,7,8,9,10] : Vect 9 Int
+```
+					</script>
 					</section>
 
 					<section data-markdown>
         	<script type="text/template">
-						## Data Types
+						## Data Types in Idris
 						Data types are declared in a similar way to Haskell data types, with a similar syntax. Natural numbers and lists, for example, can be declared as follows:
 
 						```haskell
@@ -274,9 +503,7 @@ index (fS k) (x :: xs) = index k xs
 					1. http://en.wikipedia.org/wiki/Idris_(programming_language)
 					1. http://edwinb.wordpress.com/category/idris/
 				</section>
-
 			</div>
-
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
